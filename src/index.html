@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beer-Mate — Find din øl-soulmate</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <span class="logo">🍺 BEER-MATE</span>
+  </header>
+
+  <main>
+
+    <!-- Intro -->
+    <section id="intro" class="screen active">
+      <h1>Find din øl-soulmate</h1>
+      <p class="intro-text">
+        Svar på 5 hurtige spørgsmål og find ud af hvilke øl
+        der passer til din smag — uden at vide noget om øl.
+      </p>
+      <button id="start-btn" class="btn-primary">Start quiz</button>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz" class="screen">
+      <div class="progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="progress-text" id="progress-text">1 / 5</span>
+      </div>
+      <h2 id="question-text"></h2>
+      <p id="question-subtitle" class="subtitle"></p>
+      <div id="answers" class="answers"></div>
+    </section>
+
+    <!-- Loading -->
+    <section id="loading" class="screen">
+      <div class="loader"></div>
+      <p>Finder dine øl-matches…</p>
+    </section>
+
+    <!-- Resultater -->
+    <section id="results" class="screen">
+      <h2>Din smagsprofil</h2>
+      <p id="taste-description" class="taste-desc"></p>
+
+      <h3>Anbefalede kategorier</h3>
+      <div id="category-recs" class="categories"></div>
+
+      <h3>Dine top matches</h3>
+      <div id="beer-recs" class="beer-list"></div>
+
+      <button id="restart-btn" class="btn-secondary">Prøv igen</button>
+    </section>
+
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/matching.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
