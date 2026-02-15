@@ -120,8 +120,11 @@ function getMatchResults(answers) {
     };
   });
 
-  // Sortér efter match% (højest først)
-  matches.sort((a, b) => b.matchPct - a.matchPct);
+  // Sortér efter match% (højest først), med rating som tiebreaker ved samme %
+  matches.sort((a, b) => {
+    if (a.matchPct !== b.matchPct) return b.matchPct - a.matchPct;
+    return (b.rating || 0) - (a.rating || 0);
+  });
 
   // Generer smagsbeskrivelse
   const tasteDescription = generateTasteDescription(rawProfile, isFlat);
