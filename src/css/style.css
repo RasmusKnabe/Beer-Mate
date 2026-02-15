@@ -339,6 +339,14 @@ main {
 .beer-abv {
   color: var(--text-light);
   font-size: 0.75rem;
+  display: inline;
+}
+
+.beer-rating {
+  color: var(--accent);
+  font-size: 0.75rem;
+  display: inline;
+  margin-left: 0.5rem;
 }
 
 .beer-match {

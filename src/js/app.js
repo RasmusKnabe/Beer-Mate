@@ -144,6 +144,7 @@
           <div class="beer-name">${beer.name}</div>
           <div class="beer-style">${beer.style}</div>
           <div class="beer-abv">${beer.abv}%</div>
+          <div class="beer-rating">★ ${beer.rating}</div>
         </div>
         <div class="beer-match">${beer.matchPct}%</div>
       `;
