@@ -349,6 +349,13 @@ main {
   margin-left: 0.5rem;
 }
 
+.beer-rating-source {
+  color: var(--accent);
+  font-size: 0.65rem;
+  text-transform: lowercase;
+  opacity: 0.7;
+}
+
 .beer-match {
   background: var(--primary);
   color: #fff;
