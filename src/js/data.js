@@ -54,8 +54,8 @@ const BEERS = [
   { name: "Mellow", style: "Fruit Sour", category: "Sour", abv: 5.1, scores: { bitter: 1, sweet: 2, sour: 5, body: 2, fruity: 5, roasted: 0, spicy: 1, smoky: 0, dryness: 4, complexity: 3 } },
   { name: "Big Bang Barley Wine — Vintage 2025", style: "Barley Wine", category: "Strong Ale", abv: 9.3, scores: { bitter: 2, sweet: 4, sour: 0, body: 5, fruity: 2, roasted: 3, spicy: 2, smoky: 0, dryness: 1, complexity: 5 } },
   { name: "Big Bang Barley Wine 2024", style: "Barley Wine", category: "Strong Ale", abv: 9.3, scores: { bitter: 2, sweet: 4, sour: 0, body: 5, fruity: 2, roasted: 3, spicy: 2, smoky: 0, dryness: 1, complexity: 5 } },
-  { name: "Counter Stout", style: "Dry Stout", category: "Stout/Porter", abv: 4.2, scores: { bitter: 3, sweet: 3, sour: 0, body: 4, fruity: 1, roasted: 5, spicy: 1, smoky: 0, dryness: 1, complexity: 4 } },
-  { name: "Gamma Nitro Stout", style: "Dry Stout (Nitro)", category: "Stout/Porter", abv: 4.2, scores: { bitter: 3, sweet: 3, sour: 0, body: 4, fruity: 1, roasted: 5, spicy: 1, smoky: 0, dryness: 1, complexity: 4 } },
+  { name: "Counter Stout", style: "Dry Stout", category: "Stout/Porter", abv: 4.2, scores: { bitter: 3, sweet: 3, sour: 0, body: 4, fruity: 1, roasted: 5, spicy: 1, smoky: 0, dryness: 1, complexity: 2 } },
+  { name: "Gamma Nitro Stout", style: "Dry Stout (Nitro)", category: "Stout/Porter", abv: 4.2, scores: { bitter: 3, sweet: 3, sour: 0, body: 4, fruity: 1, roasted: 5, spicy: 1, smoky: 0, dryness: 1, complexity: 2 } },
   { name: "Good Morning, Vietnam", style: "Sweet Stout", category: "Stout/Porter", abv: 8.3, scores: { bitter: 3, sweet: 3, sour: 0, body: 5, fruity: 1, roasted: 5, spicy: 1, smoky: 0, dryness: 1, complexity: 5 } },
   { name: "Ports of Call", style: "Baltic Porter", category: "Stout/Porter", abv: 7.9, scores: { bitter: 3, sweet: 3, sour: 0, body: 5, fruity: 1, roasted: 5, spicy: 1, smoky: 0, dryness: 1, complexity: 5 } },
   { name: "Northern Monk Pilgrim", style: "Imperial Stout", category: "Stout/Porter", abv: 10.0, scores: { bitter: 3, sweet: 5, sour: 0, body: 5, fruity: 1, roasted: 5, spicy: 1, smoky: 0, dryness: 1, complexity: 5 } },
@@ -108,6 +108,10 @@ const QUESTIONS = [
       {
         text: "🍬 Bland-selv",
         scores: { fruity: 1, spicy: 1, complexity: 3 }
+      },
+      {
+        text: "🧂 Chips eller popcorn",
+        scores: { bitter: -1, sweet: -1, fruity: -1, dryness: 2, complexity: -2 }
       }
     ]
   },
@@ -154,6 +158,10 @@ const QUESTIONS = [
       {
         text: "🎉 Til fest",
         scores: { sweet: 1, body: -1, fruity: 3, dryness: 1 }
+      },
+      {
+        text: "🏖️ Bare for at slukke tørsten",
+        scores: { body: -2, dryness: 3, complexity: -2 }
       }
     ]
   },
@@ -164,7 +172,7 @@ const QUESTIONS = [
     answers: [
       {
         text: "🏠 Jeg vil have noget jeg kender",
-        scores: { sweet: 1, spicy: -1, dryness: 2, complexity: -2 }
+        scores: { sweet: 1, spicy: -1, dryness: 2, complexity: -1 }
       },
       {
         text: "🌀 Jeg kan lide lidt twist",
@@ -199,7 +207,7 @@ const QUESTIONS = [
       },
       {
         text: "👽 For mærkelig",
-        scores: { spicy: -1, smoky: -1, complexity: -3 }
+        scores: { sour: -1, spicy: -1, smoky: -1, complexity: -2 }
       }
     ]
   }
@@ -227,14 +235,14 @@ const CATEGORY_META = {
 // -------------------------------------------------
 
 const TASTE_WORDS = {
-  bitter:     { pos: "markante",              neg: "bløde" },
-  sweet:      { pos: "runde og bløde",        neg: "tørre" },
+  bitter:     { pos: "markante",              neg: "milde" },
+  sweet:      { pos: "søde og runde",         neg: "stramme" },
   sour:       { pos: "friske og syrlige",     neg: null },
   body:       { pos: "fyldige",               neg: "lette" },
   fruity:     { pos: "frugtige",              neg: null },
   roasted:    { pos: "mørke",                 neg: null },
   spicy:      { pos: "krydrede",              neg: null },
   smoky:      { pos: "røgede",                neg: null },
-  dryness:    { pos: "tørre og rene",         neg: "runde" },
-  complexity: { pos: "komplekse",             neg: "enkle og rene" }
+  dryness:    { pos: "tørre og rene",         neg: "bløde" },
+  complexity: { pos: "komplekse",             neg: "enkle" }
 };

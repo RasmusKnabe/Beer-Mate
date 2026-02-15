@@ -22,15 +22,31 @@ function buildProfile(answers) {
 }
 
 /**
+ * Beregn gennemsnitlig score pr. dimension på tværs af alle øl i databasen.
+ * Bruges som dynamisk center for normalisering.
+ * @returns {Object} Gennemsnit pr. dimension
+ */
+function getBeerAverages() {
+  const avg = {};
+  DIMENSIONS.forEach(d => {
+    const sum = BEERS.reduce((acc, beer) => acc + beer.scores[d], 0);
+    avg[d] = sum / BEERS.length;
+  });
+  return avg;
+}
+
+/**
  * Normalisér rå profil til 0–5 skalaen (samme som øl-data).
- * Formel: clamp(2.5 + raw × 0.4, 0, 5)
+ * Bruger dynamisk center baseret på databasens gennemsnit pr. dimension.
+ * Formel: clamp(beerAvg[d] + raw × 0.4, 0, 5)
  * @param {Object} rawProfile
  * @returns {Object} Normaliseret profil
  */
 function normalizeProfile(rawProfile) {
+  const avg = getBeerAverages();
   const norm = {};
   DIMENSIONS.forEach(d => {
-    norm[d] = Math.max(0, Math.min(5, 2.5 + rawProfile[d] * 0.4));
+    norm[d] = Math.max(0, Math.min(5, avg[d] + rawProfile[d] * 0.4));
   });
   return norm;
 }
@@ -88,9 +104,9 @@ function getMatchResults(answers) {
   const weights = calculateWeights(rawProfile);
   const maxDist = maxPossibleDistance(weights);
 
-  // Tjek for flad profil
-  const maxRaw = Math.max(...DIMENSIONS.map(d => Math.abs(rawProfile[d])));
-  const isFlat = maxRaw < 2;
+  // Tjek for flad profil (sum af absolutte raw-scores)
+  const rawSum = DIMENSIONS.reduce((acc, d) => acc + Math.abs(rawProfile[d]), 0);
+  const isFlat = rawSum < 15;
 
   // Beregn match for hver øl
   const matches = BEERS.map(beer => {
@@ -164,28 +180,35 @@ function generateTasteDescription(rawProfile, isFlat) {
 }
 
 /**
- * Find de 2–3 bedst matchende kategorier baseret på gennemsnits-match%.
+ * Find de 2–3 bedst matchende kategorier baseret på top-3 gennemsnit.
+ * Bruger de 3 bedst matchende øl pr. kategori (eller alle, hvis færre end 3).
  * @param {Object[]} matches - Sorterede øl med matchPct
  * @returns {Object[]} Top kategorier med label, desc og avgMatch
  */
 function getTopCategories(matches) {
-  // Gruppér efter kategori og beregn gennemsnit
+  // Gruppér efter kategori
   const catMap = {};
   matches.forEach(m => {
     if (!catMap[m.category]) {
-      catMap[m.category] = { total: 0, count: 0 };
+      catMap[m.category] = [];
     }
-    catMap[m.category].total += m.matchPct;
-    catMap[m.category].count += 1;
+    catMap[m.category].push(m.matchPct);
   });
 
   const categories = Object.entries(catMap)
-    .map(([cat, data]) => ({
-      category: cat,
-      label: CATEGORY_META[cat]?.label || cat,
-      desc: CATEGORY_META[cat]?.desc || "",
-      avgMatch: Math.round(data.total / data.count)
-    }))
+    .map(([cat, pcts]) => {
+      // Sortér match-procenter faldende og tag top 3
+      pcts.sort((a, b) => b - a);
+      const topN = pcts.slice(0, 3);
+      const avg = topN.reduce((a, b) => a + b, 0) / topN.length;
+
+      return {
+        category: cat,
+        label: CATEGORY_META[cat]?.label || cat,
+        desc: CATEGORY_META[cat]?.desc || "",
+        avgMatch: Math.round(avg)
+      };
+    })
     .sort((a, b) => b.avgMatch - a.avgMatch);
 
   // Returnér top 3
